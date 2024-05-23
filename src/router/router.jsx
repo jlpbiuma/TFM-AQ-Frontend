@@ -1,29 +1,9 @@
-import { createBrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "../pages/Home";
-import ViewUsuarios from "../pages/Usuarios.jsx";
-import ViewDispositivos from "../pages/Dispositivos.jsx";
-import ViewSensores from "../pages/Sensores.jsx";
+// src/router/router.jsx
+import { Routes, Route } from "react-router-dom";
+import { publicRoutes } from "./PublicRoutes";
+import { privateRoutes } from "./PrivateRoutes";
 
-const router = [
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/dispositivos",
-    element: <ViewDispositivos />,
-  },
-  {
-    path: "/usuarios",
-    element: <ViewUsuarios />,
-  },
-  {
-    path: "/sensores",
-    element: <ViewSensores />,
-  },
-];
-
-const routerBrowser = createBrowserRouter(router);
+const router = [...publicRoutes, ...privateRoutes];
 
 export const Router = () => {
   return (

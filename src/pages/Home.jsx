@@ -1,7 +1,7 @@
 import React from "react";
 import Notifications from "../utils/Notifications.js";
 
-export const Home = () => {
+const Home = () => {
   return (
     <div>
       Home
@@ -11,3 +11,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home;
