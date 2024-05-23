@@ -9,7 +9,7 @@ import ViewDashboard from "../pages/Dashboard.jsx";
 
 export const privateRoutes = [
   {
-    path: "/",
+    path: "/home",
     element: <ProtectedRoute element={<Home />} />,
     roles: 1,
     name: "Home",
