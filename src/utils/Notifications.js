@@ -1,19 +1,20 @@
 import toast from "react-hot-toast";
 
-const success = () =>
-  toast("Hello World", {
+const success = (message, backgroundColor, letterColor) =>
+  toast(message, {
     duration: 4000,
     position: "top-right",
 
     // Styling
     style: {
-      background: "#333",
-      color: "#fff",
+      background: backgroundColor,
+      color: letterColor,
+      borderRadius: "10px",
     },
     className: "",
 
     // Custom Icon
-    icon: "👏",
+    icon: "✅",
 
     // Change colors of success/error/loading icon
     iconTheme: {
@@ -28,20 +29,20 @@ const success = () =>
     },
   });
 
-const error = () =>
-  toast("Error", {
+const error = (message, backgroundColor = "#fff", letterColor = "#f00") =>
+  toast(message, {
     duration: 4000,
     position: "top-right",
 
     // Styling
     style: {
-      background: "#333",
-      color: "#fff",
+      background: backgroundColor,
+      color: letterColor,
     },
     className: "",
 
     // Custom Icon
-    icon: "👏",
+    icon: "❌",
 
     // Change colors of success/error/loading icon
     iconTheme: {

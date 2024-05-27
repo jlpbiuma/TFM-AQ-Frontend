@@ -1,7 +1,7 @@
 // Estaciones.jsx
 import Estacion from "./Estacion";
 
-const Estaciones = ({ estaciones, onEdit, onDelete }) => {
+const Estaciones = ({ estaciones, onEdit, onDelete, isTecnico }) => {
   return (
     <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {estaciones.map((estacion) => (
@@ -10,6 +10,7 @@ const Estaciones = ({ estaciones, onEdit, onDelete }) => {
           key={estacion.id}
           onEdit={onEdit}
           onDelete={onDelete}
+          isTecnico={isTecnico}
         />
       ))}
     </ul>

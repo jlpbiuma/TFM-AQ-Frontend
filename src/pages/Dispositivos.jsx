@@ -1,6 +1,5 @@
 import Table from "../components/table/Table.jsx";
 import { deviceColumns } from "../components/table/columns/deviceColumns";
-import { DATA2 } from "../data/MOCK_DATA-2";
 import { useState, useEffect } from "react";
 import API from "../api/dispositivos.js";
 import Notifications from "../utils/Notifications.js";
@@ -52,7 +51,6 @@ const ViewDispositivos = () => {
             column={deviceColumns}
             tableContext={"Dispositivos"}
           />
-          {/* <Table data={data} column={columna} tableContext={"Dispositivos"} /> */}
         </>
       )}
     </div>

@@ -21,7 +21,13 @@ import { ArrowDownIcon } from "./icons/ArrowDown";
 import { cn } from "../../utils/cn";
 import TableTopBar from "./TableTopBar";
 
-const Table = ({ data, column, tableContext }) => {
+const Table = ({
+  modalTitle,
+  data,
+  column,
+  buttonText,
+  CreateFormComponent,
+}) => {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
   const [rowSelection, setRowSelection] = useState({});
@@ -75,7 +81,12 @@ const Table = ({ data, column, tableContext }) => {
 
   return (
     <div className="flex flex-col gap-2.5">
-      <TableTopBar tableContext={tableContext} table={table} />
+      <TableTopBar
+        modalTitle={modalTitle}
+        buttonText={buttonText}
+        table={table}
+        CreateFormComponent={CreateFormComponent}
+      />
       <div className="border border-stone-200 rounded-md overflow-hidden">
         <table className="w-full">
           <thead className="bg-stone-200">

@@ -6,7 +6,7 @@ import ProtectedRoute from "./ProtectedRoutes.jsx";
 import ViewMisEstaciones from "../pages/MisEstaciones.jsx";
 import ViewEstaciones from "../pages/Estaciones.jsx";
 import ViewDashboard from "../pages/Dashboard.jsx";
-import ViewEstacion from "../pages/Estacion.jsx";
+import ViewEstacionUsuarios from "../pages/EstacionUsuarios.jsx";
 
 export const privateRoutes = [
   {
@@ -59,8 +59,8 @@ export const privateRoutes = [
     visible: true,
   },
   {
-    path: "/estaciones/:id_estacion",
-    element: <ProtectedRoute element={<ViewEstacion />} />,
+    path: "/estaciones/:id_estacion/usuarios",
+    element: <ProtectedRoute element={<ViewEstacionUsuarios />} />,
     roles: 2,
     name: "Estaciones",
     visible: false,

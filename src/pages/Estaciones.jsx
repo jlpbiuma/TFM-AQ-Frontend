@@ -14,6 +14,7 @@ const ViewEstaciones = () => {
   const [currentEstacion, setCurrentEstacion] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [estacionToDelete, setEstacionToDelete] = useState(null); // State to store estacion to delete
+  const isTecnico = parseInt(localStorage.getItem("role"), 0) > 1;
 
   useEffect(() => {
     fetchEstaciones();
@@ -97,12 +98,14 @@ const ViewEstaciones = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-4">Estaciones</h1>
-      <button
-        onClick={() => openModal()}
-        className="bg-blue-500 text-white py-2 px-4 rounded mb-4"
-      >
-        Create New Estacion
-      </button>
+      {isTecnico && (
+        <button
+          onClick={() => openModal()}
+          className="bg-blue-500 text-white py-2 px-4 rounded mb-4"
+        >
+          Create New Estacion
+        </button>
+      )}
       {isLoading ? (
         <div className="text-center">Loading...</div>
       ) : (
@@ -110,6 +113,7 @@ const ViewEstaciones = () => {
           estaciones={estaciones}
           onEdit={openModal}
           onDelete={openDeleteModal} // Pass openDeleteModal as onDelete
+          isTecnico={isTecnico}
         />
       )}
       {isModalOpen && (

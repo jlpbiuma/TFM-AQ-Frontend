@@ -4,8 +4,10 @@ import API from "../api/estaciones"; // Import your API module here
 import Notifications from "../utils/Notifications"; // Import your Notifications module here
 import LinkUserEstacionForm from "../components/forms/LinkUserEstacionForm"; // Import your LinkUserEstacionForm component here
 import Modal from "../components/common/Modal";
+import Table from "../components/table/Table";
+import { estacion_user_columns } from "../components/table/columns/EstacionUserColumn";
 
-const ViewEstacion = () => {
+const ViewEstacionUsuarios = () => {
   const { id_estacion } = useParams();
   const [usuarios, setUsuarios] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +21,7 @@ const ViewEstacion = () => {
   const fetchEstaciones = () => {
     API.get_usuario_by_id_estacion(id_estacion)
       .then((response) => {
+        console.log(response);
         setUsuarios(response);
       })
       .catch((error) => {
@@ -49,23 +52,16 @@ const ViewEstacion = () => {
       {isLoading ? (
         <div className="loading-spinner">Loading...</div>
       ) : (
-        <ul>
-          {usuarios.map((usuario) => (
-            <li key={usuario.id_usuario}>
-              <h2>{usuario.nombre}</h2>
-              <p>{usuario.email}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-      {/* Modal */}
-      {showModal && (
-        <Modal onClose={handleCloseModal}>
-          <LinkUserEstacionForm id_estacion={id_estacion} />
-        </Modal>
+        <Table
+          data={usuarios}
+          column={estacion_user_columns(id_estacion, setUsuarios, usuarios)}
+          buttonText="Vincular un nuevo usuario"
+          modalTitle="Vincular usuario"
+          CreateFormComponent={LinkUserEstacionForm}
+        />
       )}
     </div>
   );
 };
 
-export default ViewEstacion;
+export default ViewEstacionUsuarios;
