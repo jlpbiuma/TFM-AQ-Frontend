@@ -3,6 +3,8 @@ import ViewContact from "../pages/prelogin/Contact.jsx"; // Public page
 import ViewLogin from "../pages/prelogin/Login.jsx";
 import ViewEstacionesPublic from "../pages/prelogin/EstacionesPublic.jsx";
 import ViewRegister from "../pages/prelogin/Register.jsx";
+import ViewForgotPassword from "../pages/prelogin/ForgotPassword.jsx";
+import ViewResetPassword from "../pages/prelogin/ResetPassword.jsx";
 
 export const publicRoutes = [
   {
@@ -16,6 +18,14 @@ export const publicRoutes = [
   {
     path: "/login",
     element: <ViewLogin />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ViewForgotPassword />,
+  },
+  {
+    path: "/reset-password?token=:token",
+    element: <ViewResetPassword />,
   },
   {
     path: "/estaciones-public",

@@ -46,7 +46,8 @@ export const deviceColumns = [
   columnHelper.accessor("opciones", {
     header: "Opciones",
     //table
-    cell: ({ column, cell }) => {
+    cell: ({ column, cell, table }) => {
+      console.log("table", table);
       const rowId = cell.row.id;
       const header = column.columnDef.header;
       return (

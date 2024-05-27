@@ -1,5 +1,6 @@
 import React from "react";
 import Notifications from "../utils/Notifications.js";
+import Chart from "../components/chart/test.jsx";
 
 const Home = () => {
   return (
@@ -7,6 +8,7 @@ const Home = () => {
       Home
       <div>
         <button onClick={Notifications.success}>Success</button>
+        <Chart />
       </div>
     </div>
   );

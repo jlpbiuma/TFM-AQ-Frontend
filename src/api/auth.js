@@ -1,7 +1,7 @@
 import { customAxios } from "./api";
 
 async function login({ username, password }) {
-  const { data } = await customAxios.post("/api/auth/login", {
+  const { data } = await customAxios.post("/auth/login", {
     username: username,
     password: password,
   });
@@ -9,7 +9,7 @@ async function login({ username, password }) {
 }
 
 async function register({ username, name, email, password, phone }) {
-  const { data } = await customAxios.post("/api/auth/register", {
+  const { data } = await customAxios.post("/auth/register", {
     username: username,
     name: name,
     email: email,
@@ -20,4 +20,19 @@ async function register({ username, name, email, password, phone }) {
   return data;
 }
 
-export default { login, register };
+async function forgotPassword(email) {
+  const { data } = await customAxios.post("/auth/forgot-password", {
+    email: email,
+  });
+  return data;
+}
+
+async function resetPassword({ token, password }) {
+  const { data } = await customAxios.post("/auth/reset-password", {
+    token: token,
+    password: password,
+  });
+  return data;
+}
+
+export default { login, register, forgotPassword, resetPassword };

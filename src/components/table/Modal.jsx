@@ -6,7 +6,6 @@ export const Modal = ({ children }) => {
 };
 
 const ModalContent = ({ children, title }) => {
-  console.log(children);
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-black/50 data-[state=closed]:animate-[dialog-overlay-hide_200ms] data-[state=open]:animate-[dialog-overlay-show_200ms]" />

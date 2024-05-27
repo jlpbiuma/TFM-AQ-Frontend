@@ -12,12 +12,12 @@ import {
   previousPage,
   nextPage,
   lastPage,
-} from "../../pagination/pagination.methods";
+} from "./pagination/pagination.methods";
 
 import PaginationButton from "./PaginationButton";
 import { useState } from "react";
-import { ArrowUpIcon } from "../../icons/ArrowUp";
-import { ArrowDownIcon } from "../../icons/ArrowDown";
+import { ArrowUpIcon } from "./icons/ArrowUp";
+import { ArrowDownIcon } from "./icons/ArrowDown";
 import { cn } from "../../utils/cn";
 import TableTopBar from "./TableTopBar";
 
@@ -75,11 +75,7 @@ const Table = ({ data, column, tableContext }) => {
 
   return (
     <div className="flex flex-col gap-2.5">
-      {/**Top bar Component start */}
-
       <TableTopBar tableContext={tableContext} table={table} />
-      {/**Top bar Component end */}
-      {/**Table Component start */}
       <div className="border border-stone-200 rounded-md overflow-hidden">
         <table className="w-full">
           <thead className="bg-stone-200">
