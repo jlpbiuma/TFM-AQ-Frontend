@@ -1,36 +1,54 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import API from "../api/estaciones";
 import mqtt from "mqtt";
+import RechartGraph from "../components/chart/rechart_example";
 
 function ViewDashboard() {
   const { id_estacion } = useParams();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [medidas, setMedidas] = useState({});
-  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [temperatureData, setTemperatureData] = useState([]);
+  const [humidityData, setHumidityData] = useState([]);
+  const [pressureData, setPressureData] = useState([]);
   const dataSize = 20;
   const intervalRef = useRef(null);
 
   useEffect(() => {
-    console.log("Fetching data for station:", id_estacion);
     API.get_estacion_by_id_estacion(id_estacion)
       .then((data) => {
-        console.log("Data fetched:", data);
         const ip_gateway = data.ip_gateway;
         // TODO: Fetch medidas from API
         const id_medida = 1;
         const client = mqtt.connect(`ws://192.168.0.30:9001`);
         client.on("connect", function () {
-          console.log("Connected to MQTT broker");
-          const topic = `estacion/${id_estacion}/magnitud/+`;
-          client.subscribe(topic);
-          console.log("Subscribed to topic:", topic);
+          const temperatureTopic = `estacion/${id_estacion}/magnitud/1`;
+          const humidityTopic = `estacion/${id_estacion}/magnitud/2`;
+          const pressureTopic = `estacion/${id_estacion}/magnitud/3`;
+          client.subscribe(temperatureTopic);
+          client.subscribe(humidityTopic);
+          client.subscribe(pressureTopic);
         });
         client.on("message", function (topic, message) {
-          console.log("Received MQTT message:", message.toString());
-          // Update state or perform other logic with MQTT message
+          // Update state based on topic
+          switch (topic) {
+            case `estacion/${id_estacion}/magnitud/1`:
+              setTemperatureData((prevData) => [
+                ...prevData,
+                parseFloat(message),
+              ]);
+              break;
+            case `estacion/${id_estacion}/magnitud/2`:
+              setHumidityData((prevData) => [...prevData, parseFloat(message)]);
+              break;
+            case `estacion/${id_estacion}/magnitud/3`:
+              setPressureData((prevData) => [...prevData, parseFloat(message)]);
+              break;
+            default:
+              break;
+          }
         });
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -48,13 +66,22 @@ function ViewDashboard() {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        // Render medidas or other component logic here
+        // Render charts
         <div>
           <RechartGraph
-            data={data}
+            data={temperatureData} // Only show the latest data
             line1Name="Temperature"
-            line2Name="Humidity"
-            title="Weather Data Over Time"
+            title="Temperature Over Time"
+          />
+          <RechartGraph
+            data={humidityData} // Only show the latest data
+            line1Name="Humidity"
+            title="Humidity Over Time"
+          />
+          <RechartGraph
+            data={pressureData} // Only show the latest data
+            line1Name="Pressure"
+            title="Pressure Over Time"
           />
         </div>
       )}
