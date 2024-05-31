@@ -6,8 +6,11 @@ import mqtt from "mqtt";
 function ViewDashboard() {
   const { id_estacion } = useParams();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [medidas, setMedidas] = useState({});
+  const [data, setData] = useState([]);
+  const dataSize = 20;
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     console.log("Fetching data for station:", id_estacion);
@@ -46,7 +49,14 @@ function ViewDashboard() {
         <p>Loading...</p>
       ) : (
         // Render medidas or other component logic here
-        <div>{/* Data rendering logic */}</div>
+        <div>
+          <RechartGraph
+            data={data}
+            line1Name="Temperature"
+            line2Name="Humidity"
+            title="Weather Data Over Time"
+          />
+        </div>
       )}
     </div>
   );
