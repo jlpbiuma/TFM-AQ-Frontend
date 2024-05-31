@@ -1,101 +1,57 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import API from "../api/estaciones";
-import mqtt from "mqtt";
 import RechartGraph from "../components/chart/rechart_example";
+import {
+  fetchStationData,
+  initializeMqttClient,
+  createInitialTopics,
+  handleMqttMessage,
+} from "../functions/functions";
 
 function ViewDashboard() {
   const { id_estacion } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [temperatureData, setTemperatureData] = useState([]);
-  const [humidityData, setHumidityData] = useState([]);
-  const [pressureData, setPressureData] = useState([]);
-  const dataSize = 20;
+  const [topics, setTopics] = useState([]);
+  const dataSize = 50;
+  const clientRef = useRef(null);
 
   useEffect(() => {
-    API.get_estacion_by_id_estacion(id_estacion)
-      .then((data) => {
-        const ip_gateway = data.ip_gateway;
-        // Initialize MQTT client
-        const client = mqtt.connect(`ws://192.168.0.30:9001`);
+    const loadData = async () => {
+      try {
+        const data = await fetchStationData(id_estacion);
+        const initialTopics = createInitialTopics(data);
+        setTopics(initialTopics);
 
-        // Subscribe to MQTT topics
-        const temperatureTopic = `estacion/${id_estacion}/magnitud/1`;
-        const humidityTopic = `estacion/${id_estacion}/magnitud/2`;
-        const pressureTopic = `estacion/${id_estacion}/magnitud/3`;
-
-        client.on("connect", function () {
-          console.log("Connected to MQTT broker");
-          client.subscribe([temperatureTopic, humidityTopic, pressureTopic]);
-        });
-
-        // Handle MQTT messages
-        client.on("message", function (topic, message) {
-          // Convert message to float
-          const dataPoint = parseFloat(message);
-          const timeStamp = new Date().toLocaleTimeString();
-          switch (topic) {
-            case temperatureTopic:
-              setTemperatureData((prevData) => {
-                const updatedData = [
-                  ...prevData,
-                  {
-                    time: timeStamp,
-                    line1: dataPoint,
-                  },
-                ];
-                return updatedData.length > dataSize
-                  ? updatedData.slice(-dataSize)
-                  : updatedData;
-              });
-              break;
-            case humidityTopic:
-              setHumidityData((prevData) => {
-                const updatedData = [
-                  ...prevData,
-                  {
-                    time: timeStamp,
-                    line1: dataPoint,
-                  },
-                ];
-                return updatedData.length > dataSize
-                  ? updatedData.slice(-dataSize)
-                  : updatedData;
-              });
-              break;
-            case pressureTopic:
-              setPressureData((prevData) => {
-                const updatedData = [
-                  ...prevData,
-                  {
-                    time: timeStamp,
-                    line1: dataPoint,
-                  },
-                ];
-                return updatedData.length > dataSize
-                  ? updatedData.slice(-dataSize)
-                  : updatedData;
-              });
-              break;
-            default:
-              break;
+        const client = initializeMqttClient(
+          data.ip_local,
+          data.topics,
+          (topic, message) => {
+            handleMqttMessage(topic, message, setTopics, dataSize);
           }
-        });
-
+        );
+        clientRef.current = client;
         setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    };
+
+    loadData();
 
     return () => {
-      // Clean up MQTT client
-      client.end();
+      if (clientRef.current) {
+        clientRef.current.end();
+        console.log("Disconnected from MQTT broker");
+      }
     };
   }, [id_estacion]);
 
   const handleBack = () => {
+    if (clientRef.current) {
+      clientRef.current.end();
+      console.log("Disconnected from MQTT broker");
+    }
     navigate(-1);
   };
 
@@ -106,23 +62,15 @@ function ViewDashboard() {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        // Render charts
         <div>
-          <RechartGraph
-            data={temperatureData}
-            line1Name="Temperature"
-            title="Temperature Over Time"
-          />
-          <RechartGraph
-            data={humidityData}
-            line1Name="Humidity"
-            title="Humidity Over Time"
-          />
-          <RechartGraph
-            data={pressureData}
-            line1Name="Pressure"
-            title="Pressure Over Time"
-          />
+          {topics.map((topic) => (
+            <RechartGraph
+              key={topic.id_magnitud}
+              data={topic.data}
+              title={topic.descripcion}
+              line1Name={topic.magnitud}
+            />
+          ))}
         </div>
       )}
     </div>
