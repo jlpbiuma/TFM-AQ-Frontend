@@ -5,6 +5,11 @@ async function get_estaciones() {
   return data;
 }
 
+async function get_estacion_by_id_estacion(id_estacion) {
+  const { data } = await customAxios.get("/estacion/" + id_estacion);
+  return data;
+}
+
 async function get_estaciones_by_user(id_usuario) {
   const { data } = await customAxios.get(
     "/estacion/usuario/mis-estaciones/" + id_usuario
@@ -67,6 +72,7 @@ async function link_list_usuarios_id_estacion(id_estacion, ids_usuarios) {
 
 export default {
   get_estaciones,
+  get_estacion_by_id_estacion,
   get_estaciones_by_user,
   create_estacion,
   update_estacion,
