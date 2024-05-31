@@ -12,47 +12,87 @@ function ViewDashboard() {
   const [humidityData, setHumidityData] = useState([]);
   const [pressureData, setPressureData] = useState([]);
   const dataSize = 20;
-  const intervalRef = useRef(null);
 
   useEffect(() => {
     API.get_estacion_by_id_estacion(id_estacion)
       .then((data) => {
         const ip_gateway = data.ip_gateway;
-        // TODO: Fetch medidas from API
-        const id_medida = 1;
+        // Initialize MQTT client
         const client = mqtt.connect(`ws://192.168.0.30:9001`);
+
+        // Subscribe to MQTT topics
+        const temperatureTopic = `estacion/${id_estacion}/magnitud/1`;
+        const humidityTopic = `estacion/${id_estacion}/magnitud/2`;
+        const pressureTopic = `estacion/${id_estacion}/magnitud/3`;
+
         client.on("connect", function () {
-          const temperatureTopic = `estacion/${id_estacion}/magnitud/1`;
-          const humidityTopic = `estacion/${id_estacion}/magnitud/2`;
-          const pressureTopic = `estacion/${id_estacion}/magnitud/3`;
-          client.subscribe(temperatureTopic);
-          client.subscribe(humidityTopic);
-          client.subscribe(pressureTopic);
+          console.log("Connected to MQTT broker");
+          client.subscribe([temperatureTopic, humidityTopic, pressureTopic]);
         });
+
+        // Handle MQTT messages
         client.on("message", function (topic, message) {
-          // Update state based on topic
+          // Convert message to float
+          const dataPoint = parseFloat(message);
+          const timeStamp = new Date().toLocaleTimeString();
           switch (topic) {
-            case `estacion/${id_estacion}/magnitud/1`:
-              setTemperatureData((prevData) => [
-                ...prevData,
-                parseFloat(message),
-              ]);
+            case temperatureTopic:
+              setTemperatureData((prevData) => {
+                const updatedData = [
+                  ...prevData,
+                  {
+                    time: timeStamp,
+                    line1: dataPoint,
+                  },
+                ];
+                return updatedData.length > dataSize
+                  ? updatedData.slice(-dataSize)
+                  : updatedData;
+              });
               break;
-            case `estacion/${id_estacion}/magnitud/2`:
-              setHumidityData((prevData) => [...prevData, parseFloat(message)]);
+            case humidityTopic:
+              setHumidityData((prevData) => {
+                const updatedData = [
+                  ...prevData,
+                  {
+                    time: timeStamp,
+                    line1: dataPoint,
+                  },
+                ];
+                return updatedData.length > dataSize
+                  ? updatedData.slice(-dataSize)
+                  : updatedData;
+              });
               break;
-            case `estacion/${id_estacion}/magnitud/3`:
-              setPressureData((prevData) => [...prevData, parseFloat(message)]);
+            case pressureTopic:
+              setPressureData((prevData) => {
+                const updatedData = [
+                  ...prevData,
+                  {
+                    time: timeStamp,
+                    line1: dataPoint,
+                  },
+                ];
+                return updatedData.length > dataSize
+                  ? updatedData.slice(-dataSize)
+                  : updatedData;
+              });
               break;
             default:
               break;
           }
         });
+
         setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+
+    return () => {
+      // Clean up MQTT client
+      client.end();
+    };
   }, [id_estacion]);
 
   const handleBack = () => {
@@ -69,17 +109,17 @@ function ViewDashboard() {
         // Render charts
         <div>
           <RechartGraph
-            data={temperatureData} // Only show the latest data
+            data={temperatureData}
             line1Name="Temperature"
             title="Temperature Over Time"
           />
           <RechartGraph
-            data={humidityData} // Only show the latest data
+            data={humidityData}
             line1Name="Humidity"
             title="Humidity Over Time"
           />
           <RechartGraph
-            data={pressureData} // Only show the latest data
+            data={pressureData}
             line1Name="Pressure"
             title="Pressure Over Time"
           />
