@@ -3,6 +3,7 @@ import { deviceColumns } from "../components/table/columns/deviceColumns";
 import { useState, useEffect } from "react";
 import API from "../api/dispositivos.js";
 import Notifications from "../utils/Notifications.js";
+import CreateDeviceForm from "../components/forms/CreateDeviceForm.jsx";
 
 const columna = [
   { id: 1, header: "APELLIDO", accessorKey: "apellidos" },
@@ -47,9 +48,12 @@ const ViewDispositivos = () => {
       ) : (
         <>
           <Table
+            modalTitle="Crear Dispositivo"
+            buttonText="Crear Dispositivo"
             data={dispositivos}
             column={deviceColumns}
             tableContext={"Dispositivos"}
+            CreateFormComponent={CreateDeviceForm}
           />
         </>
       )}

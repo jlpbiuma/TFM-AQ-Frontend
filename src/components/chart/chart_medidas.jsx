@@ -4,7 +4,7 @@ import CanvasJSReact from "@canvasjs/react-charts";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const Chart = () => {
+const Chart = ({ data, escala }) => {
   const [dataPoints1, setDataPoints1] = useState([]);
   const [dataPoints2, setDataPoints2] = useState([]);
   const chartRef = useRef(null);

@@ -1,17 +1,37 @@
 import React, { useState, useEffect } from "react";
+import MultiSelectComboBox from "../common/MultipleSelectionCombobox";
+import API_MAGNITUDES from "../../api/magnitudes";
+import API_DISPOSITIVOS from "../../api/dispositivos";
+import Notifications from "../../utils/Notifications";
 
-/* eslint-disable react/prop-types */
-const CreateDeviceForm = () => {
+const CreateDeviceForm = ({ estacion }) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
-  const [magnitude, setMagnitude] = useState("");
+  const [magnitudes, setMagnitudes] = useState([]);
+  const [selectedMagnitudes, setSelectedMagnitudes] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (magnitudes.length === 0) {
+      API_MAGNITUDES.get_posibles_magnitudes()
+        .then((response) => {
+          setMagnitudes(response);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: ADD CREATE SENSOR HERE!
-    console.log("Hello world!");
+    API_DISPOSITIVOS.create_dispositivo(
+      estacion.id,
+      name,
+      location,
+      selectedMagnitudes
+    )
+      .then((response) => {
+        Notifications.success("Dispositivo creado correctamente");
+      })
+      .catch((err) => Notifications.error("Error creando dispositivo"));
   };
 
   return (
@@ -50,23 +70,17 @@ const CreateDeviceForm = () => {
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="magnitude"
+            htmlFor="magnitud"
           >
             Magnitud
           </label>
-          <select
-            id="magnitude"
-            value={magnitude}
-            onChange={(e) => setMagnitude(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="">Seleccione una magnitud</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
+          <MultiSelectComboBox
+            items={magnitudes}
+            selectedItems={selectedMagnitudes}
+            setSelectedItems={setSelectedMagnitudes}
+            idField="id_posible_magnitud"
+            descriptionField="descripcion"
+          />
         </div>
         <button
           type="submit"
@@ -80,9 +94,3 @@ const CreateDeviceForm = () => {
 };
 
 export default CreateDeviceForm;
-
-// const CreateDeviceForm = () => {
-//   return <div>CreateDeviceForm</div>;
-// };
-
-// export default CreateDeviceForm;
