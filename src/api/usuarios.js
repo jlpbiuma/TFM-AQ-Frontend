@@ -11,7 +11,7 @@ async function get_usuarios(per_page = 1000, page = 1) {
 }
 
 async function create_usuario(usuario) {
-  const { data } = await customAxios.post("/usuario", usuario);
+  const { data } = await customAxios.post("/usuario/create", usuario);
   return data;
 }
 

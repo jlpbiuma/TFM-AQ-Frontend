@@ -1,7 +1,6 @@
 import Home from "../pages/Home";
 import ViewUsuarios from "../pages/Usuarios.jsx";
 import ViewDispositivos from "../pages/Dispositivos.jsx";
-import ViewSensores from "../pages/Sensores.jsx";
 import ProtectedRoute from "./ProtectedRoutes.jsx";
 import ViewMisEstaciones from "../pages/MisEstaciones.jsx";
 import ViewEstaciones from "../pages/Estaciones.jsx";
@@ -29,13 +28,6 @@ export const privateRoutes = [
     element: <ProtectedRoute element={<ViewUsuarios />} />,
     roles: 2,
     name: "Usuarios",
-    visible: true,
-  },
-  {
-    path: "/sensores",
-    element: <ProtectedRoute element={<ViewSensores />} />,
-    roles: 2,
-    name: "Sensores",
     visible: true,
   },
   {
@@ -71,6 +63,12 @@ export const privateRoutes = [
     element: <ProtectedRoute element={<ViewHistorico />} />,
     roles: 1,
     name: "Historico",
+    visible: false,
+  },
+  {
+    path: "*",
+    element: <ProtectedRoute element={<Home />} />,
+    name: "Home",
     visible: false,
   },
 ];
