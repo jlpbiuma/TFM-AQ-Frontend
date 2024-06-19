@@ -1,7 +1,7 @@
 import { customAxios } from "./api";
 
 async function get_posibles_magnitudes() {
-  const { data } = await customAxios.get("/magnitud/posibles");
+  const { data } = await customAxios.get("/magnitud/");
   console.log(data);
   return data;
 }

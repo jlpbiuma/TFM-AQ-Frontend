@@ -34,14 +34,14 @@ const RechartGraph = ({ data, line1Name, line2Name, title }) => {
           dot={false}
           isAnimationActive={false}
         />
-        <Line
+        {/* <Line
           type="monotone"
           dataKey="line2"
           name={line2Name}
           stroke="#82ca9d"
           dot={false}
           isAnimationActive={false}
-        />
+        /> */}
       </LineChart>
     </div>
   );

@@ -1,5 +1,5 @@
-import mqtt from "mqtt";
 import API from "../api/estaciones";
+import mqtt from "mqtt";
 
 export const fetchStationData = async (id_estacion) => {
   try {
@@ -15,25 +15,33 @@ export const fetchStationData = async (id_estacion) => {
 export const initializeMqttClient = (ip_local, topics, onMessageCallback) => {
   const client = mqtt.connect(`ws://${ip_local}:9001`);
   client.on("connect", () => {
-    const str_topics = topics.map((topic) => topic.topic);
-    client.subscribe(str_topics);
+    const str_topics = topics.map((topic) => topic.topic_str);
+    client.subscribe(str_topics, (err) => {
+      if (err) {
+        console.error("Subscription error:", err);
+      }
+    });
   });
   client.on("message", onMessageCallback);
   return client;
 };
 
 export const createInitialTopics = (data) => {
-  return data.topics.map((topic) => ({
-    ...topic,
+  const result = data.topics.map((topic, index) => ({
+    id_magnitud: index + 1,
+    topic: topic.topic_str,
+    descripcion: topic.magnitud.descripcion,
+    magnitud: topic.magnitud.magnitud,
+    escala: topic.magnitud.escala,
     data: [],
   }));
+  return result;
 };
 
 export const handleMqttMessage = (topic, message, setTopics, dataSize) => {
   const dataPoint = parseFloat(message);
   const timeStamp = new Date().toLocaleTimeString();
   const topicNumber = parseInt(topic.match(/\d+$/)[0]);
-
   setTopics((prevTopics) => {
     const topicIndex = prevTopics.findIndex(
       (t) => t.id_magnitud === topicNumber

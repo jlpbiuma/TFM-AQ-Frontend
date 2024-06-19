@@ -5,23 +5,6 @@ import API from "../api/dispositivos.js";
 import Notifications from "../utils/Notifications.js";
 import CreateDeviceForm from "../components/forms/CreateDeviceForm.jsx";
 
-const columna = [
-  { id: 1, header: "APELLIDO", accessorKey: "apellidos" },
-  { id: 2, header: "NAME", accessorKey: "name" },
-];
-const data = [
-  {
-    name: "Joseph",
-    apellidos: "Vento",
-    edad: 23,
-  },
-  {
-    name: "Jose Luis",
-    apellidos: "Pordomingo",
-    edad: 23,
-  },
-];
-
 const ViewDispositivos = () => {
   const [dispositivos, setDispositivos] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Initialize loading state
@@ -54,6 +37,7 @@ const ViewDispositivos = () => {
             column={deviceColumns}
             tableContext={"Dispositivos"}
             CreateFormComponent={CreateDeviceForm}
+            setData={setDispositivos}
           />
         </>
       )}

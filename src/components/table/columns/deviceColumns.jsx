@@ -1,9 +1,26 @@
 /* eslint-disable react/prop-types */
 import { createColumnHelper } from "@tanstack/react-table";
 import { Modal } from "../Modal";
-import EditSensorForm from "../../forms/EditSensorForm";
+import EditdispositivoForm from "../../forms/EditDeviceForm";
+import API_DISPOSITIVOS from "../../../api/dispositivos";
+import Notifications from "../../../utils/Notifications";
 
 const columnHelper = createColumnHelper();
+
+const handleDelete = (id_dispositivo, setData) => {
+  console.log("Deleting dispositivo with id:", id_dispositivo);
+  API_DISPOSITIVOS.delete_dispositivo(id_dispositivo)
+    .then(() => {
+      // Filter out the deleted device
+      setData((prevData) =>
+        prevData.filter((device) => device._id !== id_dispositivo)
+      );
+      Notifications.success("dispositivo eliminado correctamente");
+    })
+    .catch(() => {
+      Notifications.error("Error eliminando dispositivo");
+    });
+};
 
 export const deviceColumns = [
   columnHelper.accessor("", {
@@ -40,16 +57,17 @@ export const deviceColumns = [
   columnHelper.accessor("location", {
     header: "Location",
   }),
-  columnHelper.accessor("station-name", {
+  columnHelper.accessor("nombre_estacion", {
     header: "Station name",
   }),
   columnHelper.accessor("opciones", {
     header: "Opciones",
     //table
-    cell: ({ column, cell, table }) => {
-      console.log("table", table);
-      const rowId = cell.row.id;
+    cell: ({ row, column, cell, table }) => {
+      const setData = table.options.meta.setData;
       const header = column.columnDef.header;
+      const id_dispositivo = row.original._id;
+      const name = row.original.name;
       return (
         <>
           <Modal>
@@ -57,10 +75,16 @@ export const deviceColumns = [
               {`Editar sensor`}
             </Modal.Button>
 
-            <Modal.Content title={`Editar sensor ${rowId}`}>
-              <EditSensorForm rowId={rowId} />
+            <Modal.Content title={`Editar sensor ${name}`}>
+              <EditdispositivoForm id_dispositivo={id_dispositivo} />
             </Modal.Content>
           </Modal>
+          <button
+            className="inline-flex text-red-700 p-0.5 bg-red-200 rounded-md px-2.5 mx-3"
+            onClick={() => handleDelete(id_dispositivo, setData)}
+          >
+            Eliminar dispositivo
+          </button>
         </>
       );
     },

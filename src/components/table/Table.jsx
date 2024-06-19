@@ -25,6 +25,7 @@ const Table = ({
   modalTitle,
   data,
   column,
+  setData,
   buttonText,
   CreateFormComponent,
 }) => {
@@ -46,6 +47,7 @@ const Table = ({
     getRowId: (row) => row.id,
     meta: {
       setFiltering,
+      setData,
     },
   });
 
@@ -85,6 +87,7 @@ const Table = ({
         modalTitle={modalTitle}
         buttonText={buttonText}
         table={table}
+        setData={setData}
         CreateFormComponent={CreateFormComponent}
       />
       <div className="border border-stone-200 rounded-md overflow-hidden">

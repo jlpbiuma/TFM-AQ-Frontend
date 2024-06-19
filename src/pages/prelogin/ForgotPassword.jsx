@@ -9,28 +9,29 @@ const ViewForgotPassword = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    API.forgotPassword(email);
   };
 
-  useEffect(() => {
-    if (email) {
-      // Simulate an API call
-      API.forgotPassword(email)
-        .then((response) => {
-          //   if (response.token && response.id_usuario && response.role) {
-          //     localStorage.setItem("token", response.token);
-          //     localStorage.setItem("id_usuario", response.id_usuario);
-          //     localStorage.setItem("role", response.role);
-          //     navigate("/");
-          //   } else {
-          //     alert("Invalid credentials");
-          //   }
-        })
-        .catch((error) => {
-          console.error("Login error:", error);
-          alert("Login failed. Please try again later.");
-        });
-    }
-  }, [email]);
+  // useEffect(() => {
+  //   if (email) {
+  //     // Simulate an API call
+  //     API.forgotPassword(email)
+  //       .then((response) => {
+  //         //   if (response.token && response.id_usuario && response.role) {
+  //         //     localStorage.setItem("token", response.token);
+  //         //     localStorage.setItem("id_usuario", response.id_usuario);
+  //         //     localStorage.setItem("role", response.role);
+  //         //     navigate("/");
+  //         //   } else {
+  //         //     alert("Invalid credentials");
+  //         //   }
+  //       })
+  //       .catch((error) => {
+  //         console.error("Login error:", error);
+  //         alert("Login failed. Please try again later.");
+  //       });
+  //   }
+  // }, [email]);
 
   return (
     <div className="flex items-center justify-center h-full bg-gradient-to-r from-gray-300 via-blue-500 to-blue-700">

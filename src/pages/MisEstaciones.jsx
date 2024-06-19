@@ -4,6 +4,7 @@ import API from "../api/estaciones.js";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/table/Modal.jsx";
 import CreateDeviceForm from "../components/forms/CreateDeviceForm.jsx";
+import usuarios from "../api/usuarios.js";
 
 const ViewMisEstaciones = () => {
   const [estaciones, setEstaciones] = useState([]);
@@ -55,7 +56,7 @@ const ViewMisEstaciones = () => {
             >
               <h2 className="text-xl font-semibold">{estacion.nombre}</h2>
               <p>{estacion.localizacion}</p>
-              <Modal onOpenChange={setIsModalOpen}>
+              {/* <Modal onOpenChange={setIsModalOpen}>
                 <Modal.Button asChild>
                   <button
                     className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -74,7 +75,7 @@ const ViewMisEstaciones = () => {
                     handleCloseModal={handleCloseModal}
                   />
                 </Modal.Content>
-              </Modal>
+              </Modal> */}
             </li>
           ))}
         </ul>

@@ -1,7 +1,7 @@
 import { customAxios } from "./api";
 
 async function get_estaciones() {
-  const { data } = await customAxios.get("/estacion");
+  const { data } = await customAxios.get("/estacion/");
   return data;
 }
 

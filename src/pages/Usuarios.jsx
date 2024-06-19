@@ -1,8 +1,9 @@
 import Table from "../components/table/Table.jsx";
 import { userColumns } from "../components/table/columns/userColumns";
-import { DATA } from "../data/MOCK_DATA";
 import { useState, useEffect } from "react";
 import API from "../api/usuarios.js";
+import Notifications from "../utils/Notifications.js";
+import CreateUserForm from "../components/forms/CreateUserForm.jsx";
 
 const ViewUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -28,7 +29,15 @@ const ViewUsuarios = () => {
       {isLoading ? (
         <div className="text-center">Loading...</div> // Show loading indicator while fetching data
       ) : (
-        <Table data={usuarios} column={userColumns} />
+        <Table
+          modalTitle="Crear Usuario"
+          buttonText="Crear Usuario"
+          data={usuarios}
+          column={userColumns}
+          tableContext={"Usuarios"}
+          CreateFormComponent={CreateUserForm}
+          setData={setUsuarios}
+        />
       )}
     </div>
   );

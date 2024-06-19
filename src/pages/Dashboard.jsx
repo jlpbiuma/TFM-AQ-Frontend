@@ -8,7 +8,7 @@ import {
   handleMqttMessage,
 } from "../functions/functions";
 
-function ViewDashboard() {
+const ViewDashboard = () => {
   const { id_estacion } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -21,8 +21,8 @@ function ViewDashboard() {
       try {
         const data = await fetchStationData(id_estacion);
         const initialTopics = createInitialTopics(data);
+        console.log("Data loaded:", data);
         setTopics(initialTopics);
-
         const client = initializeMqttClient(
           data.ip_local,
           data.topics,
@@ -55,6 +55,13 @@ function ViewDashboard() {
     navigate(-1);
   };
 
+  // Handle historic button and send to /mis-estaciones/id_estacion/dashboard/id_magnitud_selected/historico
+  const handleHistoric = (id_magnitud) => {
+    navigate(
+      `/mis-estaciones/${id_estacion}/dashboard/${id_magnitud}/historico`
+    );
+  };
+
   return (
     <div>
       <button onClick={handleBack}>Back</button>
@@ -64,17 +71,25 @@ function ViewDashboard() {
       ) : (
         <div>
           {topics.map((topic) => (
-            <RechartGraph
-              key={topic.id_magnitud}
-              data={topic.data}
-              title={topic.descripcion}
-              line1Name={topic.magnitud}
-            />
+            <>
+              <RechartGraph
+                key={topic.id_magnitud}
+                data={topic.data}
+                title={topic.descripcion}
+                line1Name={topic.magnitud}
+              />
+              <button
+                className="bg"
+                onClick={() => handleHistoric(topic.id_magnitud)}
+              >
+                Ver histórico
+              </button>
+            </>
           ))}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default ViewDashboard;

@@ -7,6 +7,7 @@ import ViewMisEstaciones from "../pages/MisEstaciones.jsx";
 import ViewEstaciones from "../pages/Estaciones.jsx";
 import ViewDashboard from "../pages/Dashboard.jsx";
 import ViewEstacionUsuarios from "../pages/EstacionUsuarios.jsx";
+import ViewHistorico from "../pages/Historico.jsx";
 
 export const privateRoutes = [
   {
@@ -63,6 +64,13 @@ export const privateRoutes = [
     element: <ProtectedRoute element={<ViewEstacionUsuarios />} />,
     roles: 2,
     name: "Estaciones",
+    visible: false,
+  },
+  {
+    path: "/mis-estaciones/:id_estacion/dashboard/:id_magnitud/historico",
+    element: <ProtectedRoute element={<ViewHistorico />} />,
+    roles: 1,
+    name: "Historico",
     visible: false,
   },
 ];

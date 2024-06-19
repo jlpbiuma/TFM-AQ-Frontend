@@ -1,8 +1,25 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Modal } from "../Modal";
 import EditUserForm from "../../forms/EditUserForm";
+import API_USERS from "../../../api/usuarios";
+import Notifications from "../../../utils/Notifications";
 
 const columnHelper = createColumnHelper();
+
+const handleDelete = (id_usuario, setData) => {
+  console.log("Deleting user with id:", id_usuario);
+  API_USERS.delete_usuario(id_usuario)
+    .then(() => {
+      // Filter out the deleted user
+      setData((prevData) =>
+        prevData.filter((user) => user.id_usuario !== id_usuario)
+      );
+      Notifications.success("Usuario eliminado correctamente");
+    })
+    .catch(() => {
+      Notifications.error("Error eliminando usuario");
+    });
+};
 
 export const userColumns = [
   columnHelper.accessor("", {
@@ -45,9 +62,12 @@ export const userColumns = [
   columnHelper.accessor("opciones", {
     header: "Opciones",
     //table
-    cell: ({ column, cell }) => {
+    cell: ({ column, cell, table }) => {
+      const setData = table.options.meta.setData;
       const rowId = cell.row.id;
       const header = column.columnDef.header;
+      const id_usuario = cell.row.original._id;
+      console.log("id_usuario", id_usuario);
       return (
         <>
           <Modal>
@@ -56,9 +76,15 @@ export const userColumns = [
             </Modal.Button>
 
             <Modal.Content title={`Editar usuario ${rowId}`}>
-              <EditUserForm rowId={rowId} />
+              <EditUserForm id_usuario={id_usuario} />
             </Modal.Content>
           </Modal>
+          <button
+            className="inline-flex text-red-700 p-0.5 bg-red-200 rounded-md px-2.5 mx-3"
+            onClick={() => handleDelete(id_usuario, setData)}
+          >
+            Eliminar usuario
+          </button>
         </>
       );
     },

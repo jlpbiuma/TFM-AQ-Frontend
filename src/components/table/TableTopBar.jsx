@@ -8,6 +8,7 @@ const TableTopBar = ({
   buttonText,
   table,
   CreateFormComponent,
+  setData,
 }) => {
   const handleInputOnChange = (e) => {
     table.options.meta?.setFiltering(e.target.value);
@@ -27,7 +28,7 @@ const TableTopBar = ({
             {buttonText}
           </Modal.Button>
           <Modal.Content title={modalTitle}>
-            <CreateFormComponent />
+            <CreateFormComponent setData={setData} />
           </Modal.Content>
         </Modal>
       </div>

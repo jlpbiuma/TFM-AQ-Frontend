@@ -7,7 +7,7 @@ async function get_medidas_by_id_estacion_magnitud(
   end_date
 ) {
   const { data } = await customAxios.get(
-    `/medidas/${id_estacion}/magnitud/${id_magnitud}`,
+    `/medida/estacion/${id_estacion}/magnitud/${id_magnitud}`,
     {
       params: {
         start_date,

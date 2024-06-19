@@ -1,11 +1,16 @@
 import { customAxios } from "./api";
 
 async function login({ username, password }) {
-  const { data } = await customAxios.post("/auth/login", {
-    username: username,
-    password: password,
-  });
-  return data;
+  try {
+    const { data } = await customAxios.post("/auth/login", {
+      username: username,
+      password: password,
+    });
+    return data;
+  } catch (error) {
+    console.error("Error logging in", error);
+    throw error;
+  }
 }
 
 async function register({ username, name, email, password, phone }) {

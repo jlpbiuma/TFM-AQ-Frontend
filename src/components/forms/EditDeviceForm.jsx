@@ -4,7 +4,8 @@ import API_DISPOSITIVOS from "../../api/dispositivos";
 import API_ESTACIONES from "../../api/estaciones";
 import Notifications from "../../utils/Notifications";
 
-const CreateDeviceForm = ({ setData }) => {
+const EditDeviceForm = ({ id_dispositivo }) => {
+  console.log("id_dispositivo", id_dispositivo);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [magnitudes, setMagnitudes] = useState([]);
@@ -47,15 +48,13 @@ const CreateDeviceForm = ({ setData }) => {
       Notifications.error("Debe seleccionar una estación");
       return;
     }
-    API_DISPOSITIVOS.create_dispositivo(
+    API_DISPOSITIVOS.update_dispositivo(
       selectedEstacion,
       name,
       location,
       selectedMagnitudes
     )
       .then((response) => {
-        // Add the new device to the list
-        setData((prevData) => [...prevData, response]);
         Notifications.success("Dispositivo creado correctamente");
       })
       .catch((err) => Notifications.error("Error creando dispositivo"));
@@ -147,7 +146,7 @@ const CreateDeviceForm = ({ setData }) => {
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Guardar
+            Actualizar
           </button>
         </form>
       )}
@@ -155,4 +154,4 @@ const CreateDeviceForm = ({ setData }) => {
   );
 };
 
-export default CreateDeviceForm;
+export default EditDeviceForm;
