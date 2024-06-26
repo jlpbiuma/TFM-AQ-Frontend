@@ -1,18 +1,24 @@
-import { useState } from "react";
-import Notifications from "../utils/Notifications.js";
-import Chart from "../components/chart/chart_medidas.jsx";
-import MultiSelectComboBox from "../components/common/MultipleSelectionCombobox.jsx";
-import image from "../img/logoAQ.png";
+import React from "react";
+import Background from "../img/Background2.png";
 
 const Home = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
   return (
-    <div className="p-4 bg-slate-700 h-full flex justify-center">
-      Home
-      <img src="./../img/logoAQ.png" />
-      <div className="flex flex-col align-items">
-        <div className="bg-white w-52 h-52 border rounded-lg shadow-2xl p-3 text-black-700 font-bold">
-          Hola mundo!
+    <div
+      className="relative h-full bg-cover bg-center"
+      style={{ backgroundImage: `url(${Background})`, backgroundSize: "cover" }}
+    >
+      <div className="absolute inset-0 flex justify-center p-4">
+        <div className="text-black text-center max-w-2xl">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            Bienvenido a Air Quality
+          </h1>
+          <p>
+            Su solución para la monitorización de la calidad del aire. Nuestra
+            plataforma IoT está diseñada para proporcionar datos precisos y en
+            tiempo real sobre los niveles de calidad del aire, ayudando a
+            comunidades, empresas y gobiernos a tomar decisiones informadas para
+            mejorar la salud y el bienestar de las personas.
+          </p>
         </div>
       </div>
     </div>

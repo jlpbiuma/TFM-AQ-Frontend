@@ -12,7 +12,7 @@ const Sidebar = () => {
   });
 
   return (
-    <aside className="w-64 h-full bg-gray-600 text-white">
+    <aside className="w-48 h-full bg-gray-600 text-white">
       <nav className="flex flex-col p-4">
         {filteredOptions.map(
           (option, index) =>

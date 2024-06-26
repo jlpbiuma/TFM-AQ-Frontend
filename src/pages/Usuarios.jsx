@@ -37,6 +37,7 @@ const ViewUsuarios = () => {
           tableContext={"Usuarios"}
           CreateFormComponent={CreateUserForm}
           setData={setUsuarios}
+          type="usuarios"
         />
       )}
     </div>

@@ -38,6 +38,7 @@ const ViewDispositivos = () => {
             tableContext={"Dispositivos"}
             CreateFormComponent={CreateDeviceForm}
             setData={setDispositivos}
+            type="dispositivos"
           />
         </>
       )}

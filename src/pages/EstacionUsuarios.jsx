@@ -1,17 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import API from "../api/estaciones"; // Import your API module here
+import API_USUARIOS from "../api/usuarios"; // Import your API module here
 import Notifications from "../utils/Notifications"; // Import your Notifications module here
 import LinkUserEstacionForm from "../components/forms/LinkUserEstacionForm"; // Import your LinkUserEstacionForm component here
-import Modal from "../components/common/Modal";
 import Table from "../components/table/Table";
-import { estacion_user_columns } from "../components/table/columns/EstacionUserColumn";
+import { estacion_user_columns } from "../components/table/columns/EstacionUsuarioColumn";
 
 const ViewEstacionUsuarios = () => {
   const { id_estacion } = useParams();
   const [usuarios, setUsuarios] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false); // State for modal visibility
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +17,7 @@ const ViewEstacionUsuarios = () => {
   }, []);
 
   const fetchEstaciones = () => {
-    API.get_usuario_by_id_estacion(id_estacion)
+    API_USUARIOS.get_usuario_by_id_estacion(id_estacion)
       .then((response) => {
         console.log(response);
         setUsuarios(response);
@@ -33,31 +31,30 @@ const ViewEstacionUsuarios = () => {
       });
   };
 
-  const handleAddUser = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   return (
-    <div>
-      <div>
-        <button onClick={() => navigate(-1)}>Back</button>
-        <button onClick={handleAddUser}>Add New User</button>{" "}
-        {/* Button to open modal */}
+    <div class="p-4 bg-gray-100 min-h-screen">
+      <div class="flex justify-between items-center mb-4">
+        <button
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onClick={() => navigate(-1)}
+        >
+          Volver
+        </button>
       </div>
-      <h1>Estacion {id_estacion}</h1>
+      <h1 class="text-3xl font-bold mb-6">
+        Usuarios de la estación nº{id_estacion}
+      </h1>
       {isLoading ? (
-        <div className="loading-spinner">Loading...</div>
+        <div class="loading-spinner text-center">Loading...</div>
       ) : (
         <Table
           data={usuarios}
-          column={estacion_user_columns(id_estacion, setUsuarios, usuarios)}
+          column={estacion_user_columns(id_estacion, setUsuarios)}
+          setData={setUsuarios}
           buttonText="Vincular un nuevo usuario"
           modalTitle="Vincular usuario"
           CreateFormComponent={LinkUserEstacionForm}
+          type="usuarios"
         />
       )}
     </div>

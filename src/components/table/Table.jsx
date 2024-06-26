@@ -22,12 +22,14 @@ import { cn } from "../../utils/cn";
 import TableTopBar from "./TableTopBar";
 
 const Table = ({
+  disableTopBar,
   modalTitle,
   data,
   column,
   setData,
   buttonText,
   CreateFormComponent,
+  type,
 }) => {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
@@ -83,13 +85,15 @@ const Table = ({
 
   return (
     <div className="flex flex-col gap-2.5">
-      <TableTopBar
-        modalTitle={modalTitle}
-        buttonText={buttonText}
-        table={table}
-        setData={setData}
-        CreateFormComponent={CreateFormComponent}
-      />
+      {!disableTopBar && (
+        <TableTopBar
+          modalTitle={modalTitle}
+          buttonText={buttonText}
+          table={table}
+          setData={setData}
+          CreateFormComponent={CreateFormComponent}
+        />
+      )}
       <div className="border border-stone-200 rounded-md overflow-hidden">
         <table className="w-full">
           <thead className="bg-stone-200">
@@ -149,15 +153,13 @@ const Table = ({
                   colSpan={table.getAllColumns().length}
                   className="text-center text-stone-500 px-4 py-3"
                 >
-                  User was not found
+                  No existen {type}
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-      {/**Table Component end */}
-      {/**pagination buttons start */}
       <div className="flex items-center gap-3">
         <div className="flex gap-2">
           {actions.map((pagButton) => {

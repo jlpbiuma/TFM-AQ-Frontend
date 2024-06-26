@@ -103,7 +103,7 @@ const ViewEstaciones = () => {
           onClick={() => openModal()}
           className="bg-blue-500 text-white py-2 px-4 rounded mb-4"
         >
-          Create New Estacion
+          + Nueva estación
         </button>
       )}
       {isLoading ? (
@@ -126,8 +126,8 @@ const ViewEstaciones = () => {
             />
           ) : (
             <CreateEstacionForm
+              setActualData={setEstaciones}
               onCreate={handleCreateOrUpdateEstacion}
-              onClose={closeModal}
             />
           )}
         </Modal>

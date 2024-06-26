@@ -133,7 +133,7 @@ function ViewRegister() {
             onClick={() => navigate("/login")}
             className="text-indigo-600 hover:text-indigo-800 hover:underline"
           >
-            Back to Login
+            Volver al inicio de sesión
           </button>
         </div>
       </div>

@@ -8,12 +8,11 @@ import Notifications from "../../../utils/Notifications";
 const columnHelper = createColumnHelper();
 
 const handleDelete = (id_dispositivo, setData) => {
-  console.log("Deleting dispositivo with id:", id_dispositivo);
   API_DISPOSITIVOS.delete_dispositivo(id_dispositivo)
     .then(() => {
       // Filter out the deleted device
       setData((prevData) =>
-        prevData.filter((device) => device._id !== id_dispositivo)
+        prevData.filter((device) => device.id_dispositivo !== id_dispositivo)
       );
       Notifications.success("dispositivo eliminado correctamente");
     })
@@ -66,13 +65,13 @@ export const deviceColumns = [
     cell: ({ row, column, cell, table }) => {
       const setData = table.options.meta.setData;
       const header = column.columnDef.header;
-      const id_dispositivo = row.original._id;
+      const id_dispositivo = row.original.id_dispositivo;
       const name = row.original.name;
       return (
         <>
           <Modal>
             <Modal.Button className="inline-flex text-emerald-700 p-0.5 bg-emerald-200 rounded-md px-2.5">
-              {`Editar sensor`}
+              {`Editar dispositivo`}
             </Modal.Button>
 
             <Modal.Content title={`Editar sensor ${name}`}>

@@ -29,12 +29,20 @@ const Estacion = ({ estacion, onEdit, onDelete, isTecnico }) => {
         </button>
       )}
       {isTecnico && (
-        <button
-          onClick={() => navigate(`/estaciones/${estacion.id}/usuarios`)}
-          className="ml-2 my-2 bg-green-500 text-white px-4 py-2 rounded"
-        >
-          Ver
-        </button>
+        <>
+          <button
+            onClick={() => navigate(`/estaciones/${estacion.id}/usuarios`)}
+            className="ml-2 my-2 bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Ver usuarios
+          </button>
+          <button
+            onClick={() => navigate(`/estaciones/${estacion.id}/dispositivos`)}
+            className="ml-2 my-2 bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Ver dispositivos
+          </button>
+        </>
       )}
     </li>
   );

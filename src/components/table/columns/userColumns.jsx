@@ -48,16 +48,19 @@ export const userColumns = [
     },
   }),
   columnHelper.accessor("name", {
-    header: "Name",
+    header: "Nombre",
+  }),
+  columnHelper.accessor("username", {
+    header: "Usuario",
   }),
   columnHelper.accessor("phone", {
-    header: "Phone",
+    header: "Teléfono",
   }),
   columnHelper.accessor("email", {
-    header: "Email",
+    header: "Correo",
   }),
   columnHelper.accessor("role", {
-    header: "Role",
+    header: "Rol",
   }),
   columnHelper.accessor("opciones", {
     header: "Opciones",

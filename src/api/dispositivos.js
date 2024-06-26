@@ -45,9 +45,45 @@ async function update_dispositivo(
   return data;
 }
 
+async function get_dispositivos_by_id_estacion(id_estacion) {
+  const { data } = await customAxios.get(
+    "/estacion/dispositivo/" + id_estacion
+  );
+  return data;
+}
+
+async function get_dispositivos_no_id_estacion(id_estacion) {
+  const { data } = await customAxios.get(
+    "estacion/dispositivo/no-estacion/" + id_estacion
+  );
+  return data;
+}
+
+async function link_dispositivo_estacion(id_dispositivo, id_estacion) {
+  const { data } = await customAxios.post(
+    "/estacion/dispositivo/" + id_estacion,
+    {
+      id_dispositivo,
+      id_estacion,
+    }
+  );
+  return data;
+}
+
+async function delete_link_dispositivo_estacion(id_estacion, id_dispositivo) {
+  const { data } = await customAxios.delete(
+    "/estacion/dispositivo/" + id_estacion + "/dispositivo/" + id_dispositivo
+  );
+  return data;
+}
+
 export default {
   get_dispositivos,
+  get_dispositivos_by_id_estacion,
+  get_dispositivos_no_id_estacion,
   create_dispositivo,
   delete_dispositivo,
   update_dispositivo,
+  link_dispositivo_estacion,
+  delete_link_dispositivo_estacion,
 };

@@ -1,12 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import RechartGraph from "../components/chart/rechart_example";
 import {
   fetchStationData,
   initializeMqttClient,
   createInitialTopics,
   handleMqttMessage,
 } from "../functions/functions";
+import Notification from "../utils/Notifications";
+import Charts from "../components/common/Charts";
 
 const ViewDashboard = () => {
   const { id_estacion } = useParams();
@@ -21,7 +22,12 @@ const ViewDashboard = () => {
       try {
         const data = await fetchStationData(id_estacion);
         const initialTopics = createInitialTopics(data);
-        console.log("Data loaded:", data);
+        console.log("Initial topics:", initialTopics);
+        if (initialTopics.length === 0) {
+          Notification.error("No topics found for this station");
+          setIsLoading(false);
+          return;
+        }
         setTopics(initialTopics);
         const client = initializeMqttClient(
           data.ip_local,
@@ -30,6 +36,10 @@ const ViewDashboard = () => {
             handleMqttMessage(topic, message, setTopics, dataSize);
           }
         );
+        client.on("error", (error) => {
+          console.error("MQTT error:", error);
+          Notification("MQTT error", error.message, "error");
+        });
         clientRef.current = client;
         setIsLoading(false);
       } catch (error) {
@@ -42,7 +52,6 @@ const ViewDashboard = () => {
     return () => {
       if (clientRef.current) {
         clientRef.current.end();
-        console.log("Disconnected from MQTT broker");
       }
     };
   }, [id_estacion]);
@@ -63,30 +72,26 @@ const ViewDashboard = () => {
   };
 
   return (
-    <div>
-      <button onClick={handleBack}>Back</button>
-      <h1>Dashboard for Station {id_estacion}</h1>
+    <div className="p-2">
+      <div className="flex justify-between items-center mb-4">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onClick={handleBack}
+        >
+          Volver
+        </button>
+        <h1 className="text-3xl font-bold">
+          Dashboard for Station {id_estacion}
+        </h1>
+      </div>
       {isLoading ? (
-        <p>Loading...</p>
+        <p className="text-center text-gray-500">Loading...</p>
+      ) : topics.length === 0 ? (
+        <p className="text-center text-gray-500">
+          Esta estación no tiene dispositivos que manden información
+        </p>
       ) : (
-        <div>
-          {topics.map((topic) => (
-            <>
-              <RechartGraph
-                key={topic.id_magnitud}
-                data={topic.data}
-                title={topic.descripcion}
-                line1Name={topic.magnitud}
-              />
-              <button
-                className="bg"
-                onClick={() => handleHistoric(topic.id_magnitud)}
-              >
-                Ver histórico
-              </button>
-            </>
-          ))}
-        </div>
+        <Charts topics={topics} handleHistoric={handleHistoric} />
       )}
     </div>
   );

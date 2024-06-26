@@ -35,4 +35,7 @@ export const publicRoutes = [
     path: "/register",
     element: <ViewRegister />,
   },
+  {
+    path: "/unauthorized",
+  },
 ];

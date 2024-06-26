@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Notifications from "../../utils/Notifications.js";
 import API from "../../api/estaciones.js";
 
-const CreateEstacionForm = ({ onCreate }) => {
+const CreateEstacionForm = ({ onClose, setActualData }) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [estacion, setEstacion] = useState(null);
@@ -18,9 +18,12 @@ const CreateEstacionForm = ({ onCreate }) => {
     if (estacion) {
       API.create_estacion(estacion)
         .then((response) => {
-          console.log("Estacion created successfully:", response);
+          // Add the new estacion to the estaciones array
+          setActualData((previousEstaciones) => [
+            ...previousEstaciones,
+            response,
+          ]);
           Notifications.success("Estacion created successfully");
-          onCreate(response);
         })
         .catch((error) => {
           console.error("Error creating estacion:", error);
@@ -36,13 +39,13 @@ const CreateEstacionForm = ({ onCreate }) => {
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2" htmlFor="name">
-          Name
+          Nombre de la estación
         </label>
         <input
           id="name"
           type="text"
           className="w-full px-3 py-2 border rounded"
-          placeholder="Enter name"
+          placeholder="Nombre"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -50,13 +53,12 @@ const CreateEstacionForm = ({ onCreate }) => {
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2" htmlFor="location">
-          Location
+          Localización
         </label>
         <input
           id="location"
           type="text"
           className="w-full px-3 py-2 border rounded"
-          placeholder="Enter location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           required
@@ -66,9 +68,9 @@ const CreateEstacionForm = ({ onCreate }) => {
         <button
           type="button"
           className="mr-2 bg-gray-500 text-white px-4 py-2 rounded"
-          onClick={() => onCreate(null)}
+          onClick={() => onClose()}
         >
-          Cancel
+          Cancelar
         </button>
         <button
           type="submit"
@@ -77,7 +79,7 @@ const CreateEstacionForm = ({ onCreate }) => {
           }`}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Saving..." : "Save"}
+          {isSubmitting ? "Creando..." : "Crear"}
         </button>
       </div>
     </form>

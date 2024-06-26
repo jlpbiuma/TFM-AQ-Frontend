@@ -18,8 +18,6 @@ async function get_estaciones_by_user(id_usuario) {
 }
 
 async function create_estacion({ nombre, localizacion }) {
-  console.log("nombre", nombre);
-  console.log("localizacion", localizacion);
   const { data } = await customAxios.post("/estacion/create", {
     nombre: nombre,
     localizacion: localizacion,
@@ -41,35 +39,6 @@ async function delete_estacion(id) {
   return data;
 }
 
-async function get_usuario_by_id_estacion(id_estacion) {
-  const { data } = await customAxios.get("/estacion/usuario/" + id_estacion);
-  return data;
-}
-
-async function delete_link_usuario_from_estacion_by_id_usuario_id_estacion(
-  id_usuario,
-  id_estacion
-) {
-  const { data } = await customAxios.delete(
-    "/estacion/usuario/" + id_estacion + "/usuario/" + id_usuario
-  );
-  return data;
-}
-
-async function get_usuarios_no_id_estacion(id_estacion) {
-  const { data } = await customAxios.get(
-    "/estacion/usuario/no-estacion/" + id_estacion
-  );
-  return data;
-}
-
-async function link_list_usuarios_id_estacion(id_estacion, ids_usuarios) {
-  const { data } = await customAxios.post("/estacion/usuario/" + id_estacion, {
-    ids_usuarios: ids_usuarios,
-  });
-  return data;
-}
-
 export default {
   get_estaciones,
   get_estacion_by_id_estacion,
@@ -77,8 +46,4 @@ export default {
   create_estacion,
   update_estacion,
   delete_estacion,
-  get_usuario_by_id_estacion,
-  delete_link_usuario_from_estacion_by_id_usuario_id_estacion,
-  get_usuarios_no_id_estacion,
-  link_list_usuarios_id_estacion,
 };

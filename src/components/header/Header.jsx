@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full py-2 bg-gray-800 text-white flex justify-between items-center px-4 font-mono">
+    <header className="w-full py-2 bg-gray-800 text-white flex justify-between items-center px-4 font-mono z-50 relative">
       <button onClick={handleHomeClick}>Air Quality - IoT Platform</button>
       <div className="relative">
         <button
@@ -35,7 +35,7 @@ const Header = () => {
           {/* Using SVG as an img element */}
         </button>
         {isAuthenticated && isDropdownOpen && (
-          <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl">
+          <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl z-50">
             <a
               href="#"
               onClick={() => navigate("/profile")}

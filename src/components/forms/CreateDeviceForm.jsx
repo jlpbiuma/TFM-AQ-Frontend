@@ -53,12 +53,19 @@ const CreateDeviceForm = ({ setData }) => {
       location,
       selectedMagnitudes
     )
-      .then((response) => {
+      .then((dispositivo) => {
+        // Download json object from the response
+        const { id_dispositivo, name } = dispositivo; // Assuming `id_dispositivo` is a field in the response
+        downloadJson(dispositivo, id_dispositivo, name);
         // Add the new device to the list
-        setData((prevData) => [...prevData, response]);
+        // setData((prevData) => [...prevData, dispositivo]);
         Notifications.success("Dispositivo creado correctamente");
       })
-      .catch((err) => Notifications.error("Error creando dispositivo"));
+      .catch((err) => {
+        // Get data from err
+        const { data } = err.response;
+        Notifications.error(data.error);
+      });
   };
 
   return (
@@ -153,6 +160,33 @@ const CreateDeviceForm = ({ setData }) => {
       )}
     </div>
   );
+};
+
+// Function to download JSON
+const downloadJson = (response, id_dispositivo, name) => {
+  // Create the JSON object from the response
+  const jsonObject = JSON.stringify(response, null, 2);
+
+  // Create a blob from the JSON object
+  const blob = new Blob([jsonObject], { type: "application/json" });
+
+  // Create a link element
+  const link = document.createElement("a");
+
+  // Set the download attribute with the desired file name
+  link.download = `${id_dispositivo}_${name}.json`;
+
+  // Create a URL for the blob and set it as the href attribute
+  link.href = window.URL.createObjectURL(blob);
+
+  // Append the link to the body
+  document.body.appendChild(link);
+
+  // Programmatically click the link to trigger the download
+  link.click();
+
+  // Remove the link from the document
+  document.body.removeChild(link);
 };
 
 export default CreateDeviceForm;

@@ -11,9 +11,9 @@ import Notifications from "../utils/Notifications";
 
 const ViewHistorico = () => {
   const { id_estacion, id_magnitud } = useParams();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [historicData, setHistoricData] = useState([]);
+  const navigate = useNavigate();
   const [startDate, setStartDate] = useState(
     moment().subtract(1, "days").toDate()
   );
@@ -42,14 +42,22 @@ const ViewHistorico = () => {
   }, [id_estacion, id_magnitud, startDate, endDate]);
 
   const csvHeaders = [
-    { label: "Timestamp", key: "timestamp" },
-    { label: "Value", key: "value" },
+    { label: "Fecha Actual", key: "fecha_hora" },
+    { label: "Value", key: "valor" },
     // Add more headers as per your data structure
   ];
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Historico</h1>
+    <div className="p-2 mx-auto">
+      <div className="flex mb-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 mr-4"
+        >
+          Volver
+        </button>
+        <h1 className="text-2xl font-bold">Historico</h1>
+      </div>
       <div className="flex gap-4 mb-4">
         <DatePicker
           selected={startDate}
@@ -85,11 +93,13 @@ const ViewHistorico = () => {
         <p>Loading...</p>
       ) : (
         <Table
+          disableTopBar={true}
           modalTitle="Historico"
           data={historicData}
           column={medidasColumn}
           setData={setHistoricData}
           buttonText="Historico"
+          type="medidas"
         />
       )}
     </div>
