@@ -1,5 +1,5 @@
 import Table from "../components/table/Table.jsx";
-import { deviceColumns } from "../components/table/columns/deviceColumns";
+// import { deviceColumns } from "../components/table/columns/deviceColumns";
 import { useState, useEffect } from "react";
 import API from "../api/dispositivos.js";
 import Notifications from "../utils/Notifications.js";

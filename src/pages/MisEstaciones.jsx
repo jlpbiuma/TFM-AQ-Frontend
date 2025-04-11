@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Notifications from "../utils/Notifications.js";
 import API from "../api/estaciones.js";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "../components/table/Modal.jsx";
+// import { Modal } from "../components/table/Modal.jsx";
 import CreateDeviceForm from "../components/forms/CreateDeviceForm.jsx";
 import usuarios from "../api/usuarios.js";
 

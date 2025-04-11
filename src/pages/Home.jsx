@@ -10,14 +10,10 @@ const Home = () => {
       <div className="absolute inset-0 flex justify-center p-4">
         <div className="text-black text-center max-w-2xl">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Bienvenido a Air Quality
+            Bienvenido los indicadores del area de innovación
           </h1>
           <p>
-            Su solución para la monitorización de la calidad del aire. Nuestra
-            plataforma IoT está diseñada para proporcionar datos precisos y en
-            tiempo real sobre los niveles de calidad del aire, ayudando a
-            comunidades, empresas y gobiernos a tomar decisiones informadas para
-            mejorar la salud y el bienestar de las personas.
+            Aqui se muestran los indicadores
           </p>
         </div>
       </div>

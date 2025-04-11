@@ -22,14 +22,14 @@ function App() {
       location.pathname.startsWith(route.path)
     );
 
-    if (token && id_usuario && rol) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-      if (isPrivateRoute) {
-        navigate("/login");
-      }
-    }
+    // if (token && id_usuario && rol) {
+    //   setIsAuthenticated(true);
+    // } else {
+    //   setIsAuthenticated(false);
+    //   if (isPrivateRoute) {
+    //     navigate("/login");
+    //   }
+    // }
   }, [navigate, location]);
 
   return (

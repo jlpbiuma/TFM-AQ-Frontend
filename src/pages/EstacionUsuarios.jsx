@@ -4,7 +4,7 @@ import API_USUARIOS from "../api/usuarios"; // Import your API module here
 import Notifications from "../utils/Notifications"; // Import your Notifications module here
 import LinkUserEstacionForm from "../components/forms/LinkUserEstacionForm"; // Import your LinkUserEstacionForm component here
 import Table from "../components/table/Table";
-import { estacion_user_columns } from "../components/table/columns/EstacionUsuarioColumn";
+// import { estacion_user_columns } from "../components/table/columns/EstacionUsuarioColumn";
 
 const ViewEstacionUsuarios = () => {
   const { id_estacion } = useParams();

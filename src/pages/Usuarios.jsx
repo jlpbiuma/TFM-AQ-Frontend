@@ -1,5 +1,5 @@
 import Table from "../components/table/Table.jsx";
-import { userColumns } from "../components/table/columns/userColumns";
+// import { userColumns } from "../components/table/columns/userColumns";
 import { useState, useEffect } from "react";
 import API from "../api/usuarios.js";
 import Notifications from "../utils/Notifications.js";

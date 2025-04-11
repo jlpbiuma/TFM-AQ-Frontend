@@ -12,7 +12,7 @@ import {
   previousPage,
   nextPage,
   lastPage,
-} from "./pagination/pagination.methods";
+} from "./pagination.js";
 
 import PaginationButton from "./PaginationButton";
 import { useState } from "react";
@@ -25,10 +25,10 @@ const Table = ({
   disableTopBar,
   modalTitle,
   data,
-  column,
+  columns,
   setData,
   buttonText,
-  CreateFormComponent,
+  // CreateFormComponent,
   type,
 }) => {
   const [sorting, setSorting] = useState([]);
@@ -37,7 +37,7 @@ const Table = ({
 
   const table = useReactTable({
     data: data,
-    columns: column,
+    columns: columns,
     state: { sorting: sorting, globalFilter: filtering, rowSelection },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -82,7 +82,7 @@ const Table = ({
     asc: <ArrowUpIcon />,
     desc: <ArrowDownIcon />,
   };
-
+ // console.log("Datos en Table:", data);
   return (
     <div className="flex flex-col gap-2.5">
       {!disableTopBar && (
@@ -91,9 +91,20 @@ const Table = ({
           buttonText={buttonText}
           table={table}
           setData={setData}
-          CreateFormComponent={CreateFormComponent}
+          // CreateFormComponent={CreateFormComponent}
         />
       )}
+
+    <div className="flex justify-end p-2">
+      <input
+        type="text"
+        placeholder="Buscar..."
+        value={filtering}
+        onChange={(e) => setFiltering(e.target.value)}
+        className="border px-3 py-1 rounded-md shadow text-sm focus:outline-none focus:ring"
+      />
+    </div>
+
       <div className="border border-stone-200 rounded-md overflow-hidden">
         <table className="w-full">
           <thead className="bg-stone-200">

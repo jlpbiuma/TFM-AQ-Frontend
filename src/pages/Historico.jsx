@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { CSVLink } from "react-csv";
 import API_MEDIDAS from "../api/medidas";
-import { medidasColumn } from "../components/table/columns/medidasColumn";
+// import { medidasColumn } from "../components/table/columns/medidasColumn";
 import Table from "../components/table/Table";
 import Notifications from "../utils/Notifications";
 

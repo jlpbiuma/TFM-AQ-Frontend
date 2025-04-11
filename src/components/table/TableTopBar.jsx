@@ -28,7 +28,7 @@ const TableTopBar = ({
             {buttonText}
           </Modal.Button>
           <Modal.Content title={modalTitle}>
-            <CreateFormComponent setActualData={setData} />
+            {/* <CreateFormComponent setActualData={setData} /> */}
           </Modal.Content>
         </Modal>
       </div>

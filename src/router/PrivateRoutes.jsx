@@ -50,7 +50,7 @@ export const privateRoutes = [
   {
     path: "/estaciones",
     element: <ProtectedRoute element={<ViewEstaciones />} requiredRole={2} />,
-    roles: 2,
+    roles: 0,
     name: "Estaciones",
     visible: true,
   },
